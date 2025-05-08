@@ -66,7 +66,7 @@ void addThickLineToVertexArray(sf::VertexArray& va, const sf::Vector2f& p1, cons
     va.append(sf::Vertex(p2 - offset, sf::Color::White));
 }
 
-Game::Game() : window(sf::VideoMode(1920, 1080), "Ball Physics Game"), ball({960.f, 100.f}) {
+Game::Game() : window(sf::VideoMode(1920, 1080), "Plinko Drawer"), ball({960.f, 100.f}) {
     window.setFramerateLimit(120);
 }
 
@@ -410,7 +410,7 @@ void Game::update(float dt) {
                 b.reset();
                 updateBuckets();
             }
-            
+
             b.onGround = touching;
         }
     }

@@ -1,10 +1,10 @@
 cmake_minimum_required(VERSION 3.10)
-project(physics-drawer)
+project(plinko-drawer)
 
 set(CMAKE_CXX_STANDARD 17)
 find_package(SFML 2.5 REQUIRED graphics window system)
 
-add_executable(physics-drawer
+add_executable(plinko-drawer
     src/main.cpp
     src/Game.cpp
     src/Ball.cpp
@@ -13,4 +13,4 @@ add_executable(physics-drawer
     src/Math.cpp
 )
 
-target_link_libraries(physics-drawer sfml-graphics sfml-window sfml-system)
+target_link_libraries(plinko-drawer sfml-graphics sfml-window sfml-system)

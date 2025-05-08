@@ -3,7 +3,7 @@
 #include <algorithm>
 #include <cmath>
 
-void assignLabels(std::vector<int>& counts, std::vector<float>& labels, float desired_mean, float desired_stddev) {
+void assignLabels(std::vector<int>& counts, std::vector<float>& labels, float desired_mean, float desired_variance) {
     const int n = counts.size();
     if (n == 0) return;
 
@@ -29,7 +29,6 @@ void assignLabels(std::vector<int>& counts, std::vector<float>& labels, float de
     }
 
     // Assign labels based on quantiles of a normal distribution
-    const float variance = desired_stddev * desired_stddev;
     for (int i = 0; i < n; ++i) {
         const float quantile = (cum_weights[i] - counts[indices[i]] / 2.0f) / total_count;
         // Inverse CDF of normal distribution (mean=0, stddev=1)
@@ -39,7 +38,7 @@ void assignLabels(std::vector<int>& counts, std::vector<float>& labels, float de
             const float t = (quantile < 0.5f) ? std::sqrt(-2.0f * std::log(quantile)) : std::sqrt(-2.0f * std::log(1.0f - quantile));
             z_score = (quantile < 0.5f) ? -t : t;
         }
-        labels[indices[i]] = desired_mean + z_score * desired_stddev;
+        labels[indices[i]] = desired_mean + z_score * std::sqrt(desired_variance);
     }
 
     // Adjust to match desired mean and variance (due to approximation errors)
@@ -55,7 +54,7 @@ void assignLabels(std::vector<int>& counts, std::vector<float>& labels, float de
     current_var /= total_count;
 
     if (current_var > 0.0f) {
-        const float scale = std::sqrt(variance / current_var);
+        const float scale = std::sqrt(desired_variance / current_var);
         for (float& label : labels) {
             label = desired_mean + (label - current_mean) * scale;
         }
